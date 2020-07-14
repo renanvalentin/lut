@@ -26,7 +26,7 @@ export function Color({
         width={40}
         height={40}
         onClick={() => picker && setPicker(true)}
-        style={{ backgroundColor: color.toRgba() }}
+        style={{ backgroundColor: color.toRgba(), border: '1px solid #000' }}
       />
       {picker && showingPicker && (
         <OutsideClickHandler
@@ -37,7 +37,7 @@ export function Color({
           <SketchPicker
             color={currentColor}
             onChange={({ rgb: { r, g, b, a } }) => {
-              onChange(new ColorModel([r, g, b, a || 255]));
+              onChange(new ColorModel([r, g, b, a || 1]));
               setColor({ r, g, b, a });
             }}
           />

@@ -27,11 +27,18 @@ interface Props {
 }
 
 export function Palette({ id, colors, onChange }: Props) {
-  const [state, setState] = useState(initialState);
-
   return (
     <>
-      {id}
+      <Box display="flex" justifyContent="space-between">
+        {id}
+        <Color
+          color={new ColorModel([255, 255, 255, 1])}
+          picker
+          onChange={(c) => {
+            colors.map((_, index) => onChange(c, id, index));
+          }}
+        />
+      </Box>
       <Box display="flex">
         {colors.map((color, index) => (
           <Color

@@ -37,7 +37,7 @@ export class ColorModel {
   }
 
   toRgba() {
-    const [r, g, b, a] = this.data;
+    const [r, g, b, a = 1] = this.data;
 
     return `rgba(${r}, ${g}, ${b}, ${a})`;
   }

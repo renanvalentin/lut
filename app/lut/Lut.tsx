@@ -11,6 +11,7 @@ import { Color } from './Color';
 import { PalettesModel, palettes } from './PalettesModel';
 import { PersistSystem } from './PersistSystem';
 import { AppState } from './types';
+import { GenerateCanvas } from './GenerateCanvas';
 
 const initialState: AppState = PersistSystem.load();
 
@@ -26,7 +27,9 @@ export function Lut() {
 
     const extractedPalette = await ImageProcessing.extractPalette(preview);
 
-    const colors = extractedPalette.map((color) => new ColorModel(color));
+    const colors = extractedPalette
+      .map((color) => new ColorModel(color))
+      .sort((a, b) => a.toGrayscale() - b.toGrayscale());
 
     setState((s) => ({
       ...s,
@@ -45,6 +48,10 @@ export function Lut() {
     setState((s) => ({ ...s, paletteMap }));
   }
 
+  function saveFile(image: string, id: string) {
+    console.log(image);
+  }
+
   return (
     <>
       <FileUpload onChange={setColorPalette} />
@@ -52,7 +59,6 @@ export function Lut() {
         <Thumb preview={state.imagePreview} />
         <Thumb preview={state.grayscaledPreview} />
       </Box>
-
       <Box display="flex">
         {state.originalColors.map((color) => (
           <Box
@@ -76,6 +82,12 @@ export function Lut() {
               id={id}
               colors={state.paletteMap.getColorsById(id)}
               onChange={updatePalette}
+            />
+            <GenerateCanvas
+              id={id}
+              colorReference={state.originalColors}
+              colors={state.paletteMap.getColorsById(id)}
+              onChange={saveFile}
             />
           </Box>
         );
